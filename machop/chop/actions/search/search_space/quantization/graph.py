@@ -154,8 +154,9 @@ class GraphSearchSpaceMixedPrecisionPTQ(SearchSpaceBase):
         }
         """
         flattened_config = {}
+        print(self.choices_flattened)
         for k, v in indexes.items():
-            flattened_config[k] = self.choices_flattened[k][v]
+          flattened_config[k] = self.choices_flattened[k][v]
 
         config = unflatten_dict(flattened_config)
         config["default"] = self.default_config

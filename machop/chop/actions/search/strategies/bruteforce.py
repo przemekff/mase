@@ -49,12 +49,12 @@ class SearchStrategyBruteforce(SearchStrategyBase):
     #print(search_space)
     indexes = list(search_space.choice_lengths_flattened.values())
     indexes = [x - 1 for x in indexes]
-    print(indexes)
+    #print(indexes)
 
     
     
     lists = generate_combinations(indexes)
-
+    best_accuracy = 0
     
     for sublist in lists:
       #print(sublist)
@@ -63,7 +63,7 @@ class SearchStrategyBruteforce(SearchStrategyBase):
         sampled_indexes[name] = sublist[i]
         i = i+1
       sampled_config = search_space.flattened_indexes_to_config(sampled_indexes)
-      print(sampled_config)
+      #print(sampled_config)
       model = search_space.rebuild_model(sampled_config)
       software_metrics = self.compute_software_metrics(
             model, sampled_config, is_eval_mode
@@ -71,10 +71,13 @@ class SearchStrategyBruteforce(SearchStrategyBase):
       hardware_metrics = self.compute_hardware_metrics(
             model, sampled_config, is_eval_mode
         )
+      
+      if (software_metrics['accuracy'] > best_accuracy):
+        best_accuracy = software_metrics['accuracy']
+        best_config = sublist
 
-      print(software_metrics)
-      print(hardware_metrics)
-    
+    print(best_accuracy)
+    print(best_config)    
 
 
 
